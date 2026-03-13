@@ -281,7 +281,7 @@
 <body>
 
 <header>
-  <a href="https://newdle.app" class="wordmark">newdle<span class="dot"></span></a>
+  <a href="https://newdle.app" class="wordmark">newdle</a>
   <span class="label">Status</span>
 </header>
 
@@ -323,7 +323,8 @@
   function render(data) {
     const s = state(data);
     const title = data.title || defaultTitle(s);
-    const eta = data.estimated_end ? `<div class="eta-row"><span class="eta-label">Estimated recovery:</span><span class="eta-value">${fmt(data.estimated_end)}</span></div>` : '';
+    const showEta = data.estimated_end && (s === 'warn' || s === 'down');
+    const eta = showEta ? `<div class="eta-row"><span class="eta-label">Estimated recovery:</span><span class="eta-value">${fmt(data.estimated_end)}</span></div>` : '';
     const msg = data.message ? `<p class="status-message">${data.message}</p>${eta}` : '';
 
     let servicesHtml = '';
