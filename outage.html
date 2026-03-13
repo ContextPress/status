@@ -1,0 +1,398 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>We'll be right back</title>
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      :root {
+        --bg: #faf8f3;
+        --surface: #f3efe5;
+        --border: rgba(60, 45, 20, 0.12);
+        --text: #1a1612;
+        --muted: #7a6e60;
+        --green-bg: #eaf4ec;
+        --green-fg: #1d6b35;
+        --amber-bg: #fff4de;
+        --amber-fg: #8c5a00;
+        --red-bg: #fdecea;
+        --red-fg: #9b2b25;
+        --dot: #e8533a;
+      }
+
+      @font-face {
+        font-family: "System";
+        src: local("Georgia"), local("Times New Roman");
+      }
+
+      html,
+      body {
+        height: 100%;
+        background: var(--bg);
+        color: var(--text);
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      body {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        padding: 2rem;
+        position: relative;
+        overflow: hidden;
+      }
+
+      /* Subtle grid texture */
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background-image:
+          linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+          linear-gradient(
+            90deg,
+            rgba(255, 255, 255, 0.015) 1px,
+            transparent 1px
+          );
+        background-size: 40px 40px;
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      /* Glow orb */
+      body::after {
+        content: "";
+        position: fixed;
+        top: -20%;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 700px;
+        height: 400px;
+        background: radial-gradient(
+          ellipse at center,
+          rgba(224, 90, 43, 0.08) 0%,
+          transparent 70%
+        );
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      .card {
+        position: relative;
+        z-index: 1;
+        max-width: 600px;
+        width: 100%;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        padding: 3rem 3.5rem;
+        text-align: center;
+      }
+
+      /* Status indicator row */
+      .status-row {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        margin-bottom: 2.5rem;
+      }
+
+      .pulse-ring {
+        position: relative;
+        width: 10px;
+        height: 10px;
+      }
+
+      .pulse-ring::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: 50%;
+        background: var(--accent);
+        animation: pulse-dot 2s ease-in-out infinite;
+      }
+
+      .pulse-ring::after {
+        content: "";
+        position: absolute;
+        inset: -5px;
+        border-radius: 50%;
+        background: var(--accent);
+        opacity: 0;
+        animation: pulse-ring 2s ease-in-out infinite;
+      }
+
+      @keyframes pulse-dot {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.6;
+        }
+      }
+
+      @keyframes pulse-ring {
+        0% {
+          transform: scale(0.5);
+          opacity: 0.4;
+        }
+        100% {
+          transform: scale(2.2);
+          opacity: 0;
+        }
+      }
+
+      .status-label {
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--accent);
+      }
+
+      /* Icon */
+      .icon-wrap {
+        width: 72px;
+        height: 72px;
+        margin: 0 auto 2rem;
+        background: var(--accent-dim);
+        border: 1px solid rgba(224, 90, 43, 0.2);
+        border-radius: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .icon-wrap svg {
+        width: 32px;
+        height: 32px;
+        stroke: var(--accent);
+      }
+
+      /* Heading */
+      h1 {
+        font-size: 2rem;
+        font-weight: 700;
+        letter-spacing: -0.03em;
+        line-height: 1.15;
+        margin-bottom: 1rem;
+        color: var(--text);
+      }
+
+      h1 span {
+        display: block;
+        font-size: 1rem;
+        font-weight: 400;
+        letter-spacing: 0;
+        color: var(--muted);
+        margin-top: 0.4rem;
+      }
+
+      p {
+        font-size: 0.95rem;
+        line-height: 1.7;
+        color: #9c9990;
+        max-width: 360px;
+        margin: 0 auto 2.5rem;
+      }
+
+      /* Services status list */
+      .services {
+        list-style: none;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        overflow: hidden;
+        margin-bottom: 2.5rem;
+        text-align: left;
+      }
+
+      .services li {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0.8rem 1.2rem;
+        font-size: 0.85rem;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .services li:last-child {
+        border-bottom: none;
+      }
+
+      .service-name {
+        color: var(--muted);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .service-name::before {
+        content: "";
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--accent);
+        flex-shrink: 0;
+        box-shadow: 0 0 6px var(--accent);
+      }
+
+      .service-badge {
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        padding: 3px 8px;
+        border-radius: 20px;
+        background: rgba(224, 90, 43, 0.1);
+        color: var(--accent);
+        border: 1px solid rgba(224, 90, 43, 0.2);
+      }
+
+      /* ETA bar */
+      .eta-wrap {
+        background: rgba(212, 134, 15, 0.07);
+        border: 1px solid rgba(212, 134, 15, 0.15);
+        border-radius: 10px;
+        padding: 1rem 1.25rem;
+        margin-bottom: 2.5rem;
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        text-align: left;
+      }
+
+      .eta-wrap svg {
+        width: 16px;
+        height: 16px;
+        stroke: var(--amber);
+        flex-shrink: 0;
+        margin-top: 1px;
+      }
+
+      .eta-text {
+        font-size: 0.83rem;
+        line-height: 1.5;
+        color: #b8924a;
+      }
+
+      .eta-text strong {
+        color: var(--amber);
+        font-weight: 600;
+      }
+
+      /* Footer */
+      footer {
+        position: fixed;
+        bottom: 1.5rem;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 11px;
+        color: var(--muted);
+        letter-spacing: 0.04em;
+        z-index: 1;
+        white-space: nowrap;
+      }
+
+      footer a {
+        color: inherit;
+        text-decoration: none;
+        border-bottom: 1px solid var(--border);
+        padding-bottom: 1px;
+        transition: color 0.2s;
+      }
+
+      footer a:hover {
+        color: var(--text);
+      }
+
+      /* Animated progress bar (decorative) */
+      .progress-bar {
+        height: 2px;
+        background: var(--border);
+        border-radius: 2px;
+        overflow: hidden;
+        margin-bottom: 0;
+      }
+
+      .progress-fill {
+        height: 100%;
+        width: 30%;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          var(--accent),
+          transparent
+        );
+        border-radius: 2px;
+        animation: sweep 3s ease-in-out infinite;
+      }
+
+      @keyframes sweep {
+        0% {
+          transform: translateX(-200%);
+        }
+        100% {
+          transform: translateX(500%);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <h1>Newdle is down and we're sorry.</h1>
+
+      <p>
+        Our team is actively working to restore the full service we know you
+        depend on. Updates will be posted here every 2 hours and we'll send you
+        a notification as soon as we are back up.
+      </p>
+
+      <div class="eta-wrap">
+        <!-- Clock icon -->
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke-width="1.75"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <circle cx="12" cy="12" r="10" />
+          <path d="M12 6v6l4 2" />
+        </svg>
+        <p class="eta-text" style="margin: 0">
+          <strong>Estimated recovery:</strong> We're actively working on
+          restoring service. Follow
+          <a
+            href="https://status.newdle.com"
+            style="
+              color: var(--amber);
+              text-decoration: none;
+              border-bottom: 1px solid rgba(212, 134, 15, 0.3);
+            "
+            >status.newdle.com</a
+          >
+          for updates.
+        </p>
+      </div>
+    </div>
+
+    <footer>
+      &copy; 2026 Newdle &nbsp;·&nbsp;
+      <a href="https://status.newdle.com">Status page</a>
+      &nbsp;·&nbsp;
+    </footer>
+  </body>
+</html>
