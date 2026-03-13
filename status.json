@@ -1,6 +1,6 @@
 {
   "maintenance": false,
-  "degraded": true,
+  "degraded": false,
   "title": "Newdle is getting some upgrades.",
   "message": "We know you depend on Newdle, and we're working to restore the full service quickly. Updates will be posted here and we'll send you a notification as soon as we are back up.",
   "estimated_end": "2026-03-14T01:00:00Z",
