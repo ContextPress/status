@@ -1,8 +1,8 @@
 {
-  "maintenance": false,
+  "maintenance": true,
   "degraded": false,
-  "title": "Newdle is doing well.",
-  "message": "We know you depend on Newdle, so we're always keeping an eye on it.",
-  "estimated_end": "2026-05-07T19:00:00Z",
-  "updated_at": "2026-05-07T18:34:00Z"
+  "title": "Newdle is down for maintenance.",
+  "message": "Newdle is getting some upgrades. Back at 3pm Pacific Time.",
+  "estimated_end": "2026-05-07T22:00:00Z",
+  "updated_at": "2026-05-07T18:49:00Z"
 }
