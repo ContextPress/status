@@ -1,5 +1,5 @@
 {
-  "maintenance": false,
+  "maintenance": true,
   "degraded": false,
   "title": "Newdle is down for maintenance.",
   "message": "Newdle is getting some upgrades. Back at 3pm Pacific Time.",
